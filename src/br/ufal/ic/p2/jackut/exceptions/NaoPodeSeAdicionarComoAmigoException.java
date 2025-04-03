@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o usuário tenta enviar um convite para si mesmo.
  */
-public final class NaoPodeSeAdicionarComoAmigoException extends Exception {
+public final class NaoPodeSeAdicionarComoAmigoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

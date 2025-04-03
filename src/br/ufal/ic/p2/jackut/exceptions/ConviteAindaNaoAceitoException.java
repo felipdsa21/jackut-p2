@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando um usuário tenta enviar um convite repetidamente.
  */
-public final class ConviteAindaNaoAceitoException extends Exception {
+public final class ConviteAindaNaoAceitoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

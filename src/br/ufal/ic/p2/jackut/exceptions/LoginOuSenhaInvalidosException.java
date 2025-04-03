@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada ao tentar abrir uma sessão com um login inexistente ou uma senha incorreta.
  */
-public final class LoginOuSenhaInvalidosException extends Exception {
+public final class LoginOuSenhaInvalidosException extends JackutException {
     /**
      * Mensagem da exceção.
      */

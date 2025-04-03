@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o atributo requisitado não estiver preenchido.
  */
-public final class AtributoNaoPreenchidoException extends Exception {
+public final class AtributoNaoPreenchidoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

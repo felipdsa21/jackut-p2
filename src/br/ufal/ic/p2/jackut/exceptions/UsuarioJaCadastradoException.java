@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada ao tentar cadastrar um usuário com um login já usado por outro.
  */
-public final class UsuarioJaCadastradoException extends Exception {
+public final class UsuarioJaCadastradoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

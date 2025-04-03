@@ -1,3 +1,4 @@
+import br.ufal.ic.p2.jackut.Facade;
 import easyaccept.EasyAccept;
 
 /**
@@ -11,7 +12,7 @@ public class Main {
      */
     public static void main(String[] args) {
         EasyAccept.main(new String[] {
-            "br.ufal.ic.p2.jackut.Facade",
+            Facade.class.getName(),
             "tests/us1_1.txt",
             "tests/us1_2.txt",
             "tests/us2_1.txt",

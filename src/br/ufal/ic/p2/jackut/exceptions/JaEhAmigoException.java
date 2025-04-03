@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando um usuário tenta enviar um convite para outro que já seja amigo.
  */
-public final class JaEhAmigoException extends Exception {
+public final class JaEhAmigoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

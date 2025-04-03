@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o usuário tenta ler um recado sem ter recados não lidos.
  */
-public final class NaoHaRecadosException extends Exception {
+public final class NaoHaRecadosException extends JackutException {
     /**
      * Mensagem da exceção.
      */

@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o usuário tenta enviar recado para si mesmo.
  */
-public final class NaoPodeSeEnviarRecadoException extends Exception {
+public final class NaoPodeSeEnviarRecadoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

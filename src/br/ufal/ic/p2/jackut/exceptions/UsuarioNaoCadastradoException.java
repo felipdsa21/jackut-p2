@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o usuário especificado não pôde ser encontrado.
  */
-public final class UsuarioNaoCadastradoException extends Exception {
+public final class UsuarioNaoCadastradoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

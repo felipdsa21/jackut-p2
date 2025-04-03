@@ -12,12 +12,12 @@ public final class MiscUtils {
     /**
      * Um gerador de números aleatórios.
      */
-    private static final SecureRandom secureRandom = new SecureRandom();
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     /**
      * Um codificador Base64.
      */
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
+    private static final Base64.Encoder BASE64_ENCODER = Base64.getUrlEncoder().withoutPadding();
 
     /**
      * Construtor privado.
@@ -44,8 +44,8 @@ public final class MiscUtils {
      */
     public static String generateToken() {
         var randomBytes = new byte[24];
-        secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
+        SECURE_RANDOM.nextBytes(randomBytes);
+        return BASE64_ENCODER.encodeToString(randomBytes);
     }
 
     /**

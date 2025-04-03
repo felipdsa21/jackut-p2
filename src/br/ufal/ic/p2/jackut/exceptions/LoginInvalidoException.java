@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando o login especificado é null ou uma string vazia.
  */
-public final class LoginInvalidoException extends Exception {
+public final class LoginInvalidoException extends JackutException {
     /**
      * Mensagem da exceção.
      */

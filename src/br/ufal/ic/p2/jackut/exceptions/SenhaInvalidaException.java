@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.exceptions;
 /**
  * Exceção lançada quando a senha especificado é null ou uma string vazia.
  */
-public final class SenhaInvalidaException extends Exception {
+public final class SenhaInvalidaException extends JackutException {
     /**
      * Mensagem da exceção.
      */
