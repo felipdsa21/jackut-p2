@@ -1,0 +1,106 @@
+@startuml
+!theme plain
+hide circle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+class Facade {
+  - sistema : Sistema
+  + Facade()
+  + zerarSistema() : void
+  + criarUsuario(login : String, senha : String, nome : String) : void
+  + abrirSessao(login : String, senha : String) : String
+  + getAtributoUsuario(login : String, atributo : String) : String
+  + editarPerfil(id : String, atributo : String, valor : String) : void
+  + adicionarAmigo(id : String, amigo : String) : void
+  + ehAmigo(login : String, amigo : String) : boolean
+  + getAmigos(login : String) : String
+  + enviarRecado(id : String, destinatario : String, mensagem : String) : void
+  + lerRecado(id : String) : String
+  + encerrarSistema() : void
+}
+
+class JackutException {
+  + JackutException(message : String)
+  + JackutException(message : String, cause : Throwable)
+}
+
+class Dados {
+  - usuarios : HashMap<String,Usuario>
+  - sessoes : HashMap<String,Usuario>
+  + Dados()
+  + adicionarUsuario(usuario : Usuario) : void
+  + encontrarUsuarioPorLogin(login : String) : Usuario
+  + encontrarUsuarioPorSessao(id : String) : Usuario
+  + getSessoes() : Map<String,Usuario>
+}
+
+class Usuario {
+  - login : String
+  - senha : String
+  - atributos : HashMap<String,String>
+  - amigos : LinkedHashSet<String>
+  - convitesAmizade : LinkedHashSet<String>
+  - recados : ArrayList<String>
+  + Usuario(login : String, senha : String, nome : String)
+  + getLogin() : String
+  + getSenha() : String
+  + getAtributos() : Map<String,String>
+  + getAmigos() : Set<String>
+  + getConvitesAmizade() : Set<String>
+  + getRecados() : List<String>
+}
+
+class Sistema {
+  - usuarioService : UsuarioService
+  - perfilService : PerfilService
+  - amizadeService : AmizadeService
+  - recadoService : RecadoService
+  - dados : Dados
+  + Sistema(dados : Dados)
+  + getDados() : Dados
+  + setDados(dados : Dados) : void
+  + getUsuarioService() : UsuarioService
+  + getPerfilService() : PerfilService
+  + getAmizadeService() : AmizadeService
+  + getRecadosService() : RecadoService
+}
+
+class UsuarioService {
+  - dados : Supplier<Dados>
+  + UsuarioService(dados : Supplier<Dados>)
+  + criarUsuario(login : String, senha : String, nome : String) : void
+  + abrirSessao(login : String, senha : String) : String
+}
+
+class PerfilService {
+  - dados : Supplier<Dados>
+  + PerfilService(dados : Supplier<Dados>)
+  + getAtributoUsuario(login : String, atributo : String) : String
+  + editarPerfil(id : String, atributo : String, valor : String) : void
+}
+
+class AmizadeService {
+  - dados : Supplier<Dados>
+  + AmizadeService(dados : Supplier<Dados>)
+  + adicionarAmigo(id : String, amigo : String) : void
+  + ehAmigo(login : String, amigo : String) : boolean
+  + getAmigos(login : String) : String
+}
+
+class RecadoService {
+  - dados : Supplier<Dados>
+  + RecadoService(dados : Supplier<Dados>)
+  + enviarRecado(id : String, destinatario : String, mensagem : String) : void
+  + lerRecado(id : String) : String
+}
+
+Facade ..> "usa\t" Sistema
+Facade ..> "lê e salva\t" Dados
+Dados o-- "gerencia\t" Usuario
+Sistema o-- "contém\t" UsuarioService
+Sistema o-- "contém\t" PerfilService
+Sistema o-- "contém\t" AmizadeService
+Sistema o-- "contém\t" RecadoService
+Sistema o-- "contém\t" Dados
+@enduml
