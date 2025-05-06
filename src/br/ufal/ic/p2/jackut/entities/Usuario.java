@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import br.ufal.ic.p2.jackut.exceptions.LoginInvalidoException;
-import br.ufal.ic.p2.jackut.exceptions.SenhaInvalidaException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.LoginInvalidoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.SenhaInvalidaException;
 import br.ufal.ic.p2.jackut.utils.MiscUtils;
 
 /**

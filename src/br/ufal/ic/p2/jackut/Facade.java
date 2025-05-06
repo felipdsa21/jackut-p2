@@ -1,25 +1,19 @@
 package br.ufal.ic.p2.jackut;
 
 import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
-import br.ufal.ic.p2.jackut.entities.Dados;
-import br.ufal.ic.p2.jackut.exceptions.AtributoNaoPreenchidoException;
-import br.ufal.ic.p2.jackut.exceptions.ConviteAindaNaoAceitoException;
-import br.ufal.ic.p2.jackut.exceptions.JaEhAmigoException;
-import br.ufal.ic.p2.jackut.exceptions.LoginInvalidoException;
-import br.ufal.ic.p2.jackut.exceptions.LoginOuSenhaInvalidosException;
-import br.ufal.ic.p2.jackut.exceptions.NaoHaRecadosException;
-import br.ufal.ic.p2.jackut.exceptions.NaoPodeSeAdicionarComoAmigoException;
-import br.ufal.ic.p2.jackut.exceptions.NaoPodeSeEnviarRecadoException;
-import br.ufal.ic.p2.jackut.exceptions.SenhaInvalidaException;
-import br.ufal.ic.p2.jackut.exceptions.UsuarioJaCadastradoException;
-import br.ufal.ic.p2.jackut.exceptions.UsuarioNaoCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.amizade.ConviteAindaNaoAceitoException;
+import br.ufal.ic.p2.jackut.exceptions.amizade.JaEhAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.amizade.NaoPodeSeAdicionarComoAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.recado.NaoHaRecadosException;
+import br.ufal.ic.p2.jackut.exceptions.recado.NaoPodeSeEnviarRecadoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.AtributoNaoPreenchidoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.LoginInvalidoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.LoginOuSenhaInvalidosException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.SenhaInvalidaException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioJaCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
 import br.ufal.ic.p2.jackut.services.AmizadeService;
 import br.ufal.ic.p2.jackut.services.PerfilService;
 import br.ufal.ic.p2.jackut.services.RecadoService;
@@ -30,11 +24,6 @@ import br.ufal.ic.p2.jackut.services.UsuarioService;
  * Classe façade a ser usada pelos testes.
  */
 public final class Facade {
-    /**
-     * O caminho do arquivo onde os dados serão salvos.
-     */
-    private static final Path ARQUIVO_DADOS = Path.of("dados.ser");
-
     /**
      * Uma instância do sistema.
      */
@@ -47,21 +36,24 @@ public final class Facade {
      * @throws ClassNotFoundException se os dados usarem um formato não reconhecido.
      */
     public Facade() throws IOException, ClassNotFoundException {
-        Dados dados;
-        try (var ois = new ObjectInputStream(Files.newInputStream(ARQUIVO_DADOS))) {
-            dados = (Dados)ois.readObject();
-        } catch (InvalidClassException | NoSuchFileException e) {
-            dados = new Dados();
-        }
-
-        this.sistema = new Sistema(dados);
+        this.sistema = new Sistema(Path.of("dados.ser"));
+        this.sistema.carregarDados();
     }
 
     /**
      * Apaga todos os dados mantidos no sistema.
      */
     public void zerarSistema() {
-        this.sistema.setDados(new Dados());
+        this.sistema.zerarDados();
+    }
+
+    /**
+     * Salva os dados do sistema em um arquivo.
+     *
+     * @throws IOException se não for possível salvar os dados.
+     */
+    public void encerrarSistema() throws IOException {
+        this.sistema.salvarDados();
     }
 
     /**
@@ -90,19 +82,19 @@ public final class Facade {
     /**
      * Delega para {@link PerfilService#editarPerfil}. Veja o Javadoc lá.
      */
-    public void editarPerfil(String id, String atributo, String valor) throws UsuarioNaoCadastradoException {
-        this.sistema.getPerfilService().editarPerfil(id, atributo, valor);
+    public void editarPerfil(String sessao, String atributo, String valor) throws UsuarioNaoCadastradoException {
+        this.sistema.getPerfilService().editarPerfil(sessao, atributo, valor);
     }
 
     /**
      * Delega para {@link AmizadeService#adicionarAmigo}. Veja o Javadoc lá.
      */
-    public void adicionarAmigo(String id, String amigo) throws
+    public void adicionarAmigo(String sessao, String amigo) throws
         UsuarioNaoCadastradoException,
         ConviteAindaNaoAceitoException,
         JaEhAmigoException,
         NaoPodeSeAdicionarComoAmigoException {
-        this.sistema.getAmizadeService().adicionarAmigo(id, amigo);
+        this.sistema.getAmizadeService().adicionarAmigo(sessao, amigo);
     }
 
     /**
@@ -122,26 +114,15 @@ public final class Facade {
     /**
      * Delega para {@link RecadoService#enviarRecado}. Veja o Javadoc lá.
      */
-    public void enviarRecado(String id, String destinatario, String mensagem)
+    public void enviarRecado(String sessao, String destinatario, String mensagem)
         throws UsuarioNaoCadastradoException, NaoPodeSeEnviarRecadoException {
-        this.sistema.getRecadosService().enviarRecado(id, destinatario, mensagem);
+        this.sistema.getRecadosService().enviarRecado(sessao, destinatario, mensagem);
     }
 
     /**
      * Delega para {@link RecadoService#lerRecado}. Veja o Javadoc lá.
      */
-    public String lerRecado(String id) throws UsuarioNaoCadastradoException, NaoHaRecadosException {
-        return this.sistema.getRecadosService().lerRecado(id);
-    }
-
-    /**
-     * Salva os dados do sistema em um arquivo.
-     *
-     * @throws IOException se não for possível salvar os dados.
-     */
-    public void encerrarSistema() throws IOException {
-        try (var oos = new ObjectOutputStream(Files.newOutputStream(ARQUIVO_DADOS))) {
-            oos.writeObject(this.sistema.getDados());
-        }
+    public String lerRecado(String sessao) throws UsuarioNaoCadastradoException, NaoHaRecadosException {
+        return this.sistema.getRecadosService().lerRecado(sessao);
     }
 }

@@ -1,4 +1,6 @@
-package br.ufal.ic.p2.jackut.exceptions;
+package br.ufal.ic.p2.jackut.exceptions.usuario;
+
+import br.ufal.ic.p2.jackut.exceptions.JackutException;
 
 /**
  * Exceção lançada ao tentar abrir uma sessão com um login inexistente ou uma senha incorreta.

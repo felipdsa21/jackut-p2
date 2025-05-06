@@ -4,15 +4,15 @@ import java.util.function.Supplier;
 
 import br.ufal.ic.p2.jackut.entities.Dados;
 import br.ufal.ic.p2.jackut.entities.Usuario;
-import br.ufal.ic.p2.jackut.exceptions.LoginInvalidoException;
-import br.ufal.ic.p2.jackut.exceptions.LoginOuSenhaInvalidosException;
-import br.ufal.ic.p2.jackut.exceptions.SenhaInvalidaException;
-import br.ufal.ic.p2.jackut.exceptions.UsuarioJaCadastradoException;
-import br.ufal.ic.p2.jackut.exceptions.UsuarioNaoCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.LoginInvalidoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.LoginOuSenhaInvalidosException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.SenhaInvalidaException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioJaCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
 import br.ufal.ic.p2.jackut.utils.MiscUtils;
 
 /**
- * Serviço implementando de cadastro e login de usuários.
+ * Serviço implementando cadastro e login de usuários.
  */
 public final class UsuarioService {
     /**
@@ -58,15 +58,15 @@ public final class UsuarioService {
 
         Usuario usuario;
         try {
-            usuario = dados.encontrarUsuarioPorLogin(login);
+            usuario = dados.encontrarUsuario(login);
         } catch (UsuarioNaoCadastradoException e) {
             throw new LoginOuSenhaInvalidosException();
         }
 
         if (usuario.getSenha().equals(senha)) {
-            var id = MiscUtils.generateToken();
-            dados.getSessoes().put(id, usuario);
-            return id;
+            var sessao = MiscUtils.generateToken();
+            dados.getSessoes().put(sessao, login);
+            return sessao;
         } else {
             throw new LoginOuSenhaInvalidosException();
         }

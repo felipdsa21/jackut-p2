@@ -1,4 +1,6 @@
-package br.ufal.ic.p2.jackut.exceptions;
+package br.ufal.ic.p2.jackut.exceptions.amizade;
+
+import br.ufal.ic.p2.jackut.exceptions.JackutException;
 
 /**
  * Exceção lançada quando o usuário tenta enviar um convite para si mesmo.

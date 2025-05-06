@@ -1,11 +1,24 @@
 package br.ufal.ic.p2.jackut.services;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.util.function.Supplier;
+
 import br.ufal.ic.p2.jackut.entities.Dados;
 
 /**
  * Classe contendo os dados e as instâncias de todos os serviços.
  */
 public final class Sistema {
+    /**
+     * O caminho do arquivo onde o banco de dados está/será salvo.
+     */
+    private final Path caminho;
+
     /**
      * O serviço de usuários.
      */
@@ -14,12 +27,11 @@ public final class Sistema {
     /**
      * O serviço de perfis.
      */
-
     private final PerfilService perfilService;
+
     /**
      * O serviço de amizades.
      */
-
     private final AmizadeService amizadeService;
 
     /**
@@ -35,30 +47,47 @@ public final class Sistema {
     /**
      * Cria instâncias dos serviços.
      *
-     * @param dados o banco de dados.
+     * @param caminho o caminho do banco de dados.
      */
-    public Sistema(Dados dados) {
-        this.dados = dados;
-        this.usuarioService = new UsuarioService(() -> this.dados);
-        this.perfilService = new PerfilService(() -> this.dados);
-        this.amizadeService = new AmizadeService(() -> this.dados);
-        this.recadoService = new RecadoService(() -> this.dados);
+    public Sistema(Path caminho) {
+        this.caminho = caminho;
+        Supplier<Dados> dadosSupplier = () -> this.dados;
+        this.usuarioService = new UsuarioService(dadosSupplier);
+        this.perfilService = new PerfilService(dadosSupplier);
+        this.amizadeService = new AmizadeService(dadosSupplier);
+        this.recadoService = new RecadoService(dadosSupplier);
     }
 
     /**
-     * Retorna o banco de dados usado.
+     * Carrega o banco de dados do arquivo.
      *
-     * @return o banco.
+     * @throws IOException se houver um erro ao ler o arquivo.
+     * @throws ClassNotFoundException se um arquivo inválido/corrompido for passado.
      */
-    public Dados getDados() {
-        return this.dados;
+    public void carregarDados() throws IOException, ClassNotFoundException {
+        try (var ois = new ObjectInputStream(Files.newInputStream(this.caminho))) {
+            this.dados = (Dados)ois.readObject();
+        } catch (NoSuchFileException e) {
+            this.dados = new Dados();
+        }
     }
 
     /**
-     * Troca o banco de dados usado.
+     * Salva o banco de dados no arquivo.
+     *
+     * @throws IOException se houver um erro ao salvar o arquivo.
      */
-    public void setDados(Dados dados) {
-        this.dados = dados;
+    public void salvarDados() throws IOException {
+        try (var oos = new ObjectOutputStream(Files.newOutputStream(this.caminho))) {
+            oos.writeObject(this.dados);
+        }
+    }
+
+    /**
+     * Apaga todos os dados mantidos no sistema.
+     */
+    public void zerarDados() {
+        this.dados = new Dados();
     }
 
     /**

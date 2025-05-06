@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.ufal.ic.p2.jackut.exceptions.UsuarioJaCadastradoException;
-import br.ufal.ic.p2.jackut.exceptions.UsuarioNaoCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioJaCadastradoException;
+import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
 import br.ufal.ic.p2.jackut.utils.MiscUtils;
 
 /**
@@ -21,9 +21,9 @@ public final class Dados implements Serializable {
 
     /**
      * As sessões abertas.
-     * <br>Mapeia um id de sessão para o usuário que abriu essa sessão.
+     * <br>Mapeia um id de sessão para o login do usuário que abriu essa sessão.
      */
-    private final HashMap<String, Usuario> sessoes;
+    private final HashMap<String, String> sessoes;
 
     /**
      * Cria banco de dados vazio.
@@ -54,19 +54,19 @@ public final class Dados implements Serializable {
      * @return o usuário.
      * @throws UsuarioNaoCadastradoException se não houver um usuário com esse login.
      */
-    public Usuario encontrarUsuarioPorLogin(String login) throws UsuarioNaoCadastradoException {
+    public Usuario encontrarUsuario(String login) throws UsuarioNaoCadastradoException {
         return MiscUtils.requireNonNull(this.usuarios.get(login), UsuarioNaoCadastradoException::new);
     }
 
     /**
      * Encontra o usuário que abriu a sessão especificada.
      *
-     * @param id um id de sessão.
+     * @param sessao um id de sessão.
      * @return o usuário.
      * @throws UsuarioNaoCadastradoException se não houver uma sessão com esse id.
      */
-    public Usuario encontrarUsuarioPorSessao(String id) throws UsuarioNaoCadastradoException {
-        return MiscUtils.requireNonNull(this.sessoes.get(id), UsuarioNaoCadastradoException::new);
+    public Usuario encontrarUsuarioPorSessao(String sessao) throws UsuarioNaoCadastradoException {
+        return this.encontrarUsuario(this.sessoes.get(sessao));
     }
 
     /**
@@ -74,7 +74,7 @@ public final class Dados implements Serializable {
      *
      * @return o mapa.
      */
-    public Map<String, Usuario> getSessoes() {
+    public Map<String, String> getSessoes() {
         return this.sessoes;
     }
 }
