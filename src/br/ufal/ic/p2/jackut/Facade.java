@@ -3,20 +3,20 @@ package br.ufal.ic.p2.jackut;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import br.ufal.ic.p2.jackut.exceptions.amizade.ConviteAindaNaoAceitoException;
-import br.ufal.ic.p2.jackut.exceptions.amizade.JaEhAmigoException;
-import br.ufal.ic.p2.jackut.exceptions.amizade.NaoPodeSeAdicionarComoAmigoException;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoHaRecadosException;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoPodeSeEnviarRecadoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.ConviteAindaNaoAceitoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoAmigoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.AtributoNaoPreenchidoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.LoginInvalidoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.LoginOuSenhaInvalidosException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.SenhaInvalidaException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioJaCadastradoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
-import br.ufal.ic.p2.jackut.services.AmizadeService;
 import br.ufal.ic.p2.jackut.services.PerfilService;
 import br.ufal.ic.p2.jackut.services.RecadoService;
+import br.ufal.ic.p2.jackut.services.RelacionamentoService;
 import br.ufal.ic.p2.jackut.services.Sistema;
 import br.ufal.ic.p2.jackut.services.UsuarioService;
 
@@ -87,28 +87,28 @@ public final class Facade {
     }
 
     /**
-     * Delega para {@link AmizadeService#adicionarAmigo}. Veja o Javadoc lá.
+     * Delega para {@link RelacionamentoService#adicionarAmigo}. Veja o Javadoc lá.
      */
     public void adicionarAmigo(String sessao, String amigo) throws
         UsuarioNaoCadastradoException,
         ConviteAindaNaoAceitoException,
         JaEhAmigoException,
         NaoPodeSeAdicionarComoAmigoException {
-        this.sistema.getAmizadeService().adicionarAmigo(sessao, amigo);
+        this.sistema.getRelacionamentoService().adicionarAmigo(sessao, amigo);
     }
 
     /**
-     * Delega para {@link AmizadeService#ehAmigo}. Veja o Javadoc lá.
+     * Delega para {@link RelacionamentoService#ehAmigo}. Veja o Javadoc lá.
      */
     public boolean ehAmigo(String login, String amigo) throws UsuarioNaoCadastradoException {
-        return this.sistema.getAmizadeService().ehAmigo(login, amigo);
+        return this.sistema.getRelacionamentoService().ehAmigo(login, amigo);
     }
 
     /**
-     * Delega para {@link AmizadeService#getAmigos}. Veja o Javadoc lá.
+     * Delega para {@link RelacionamentoService#getAmigos}. Veja o Javadoc lá.
      */
     public String getAmigos(String login) throws UsuarioNaoCadastradoException {
-        return this.sistema.getAmizadeService().getAmigos(login);
+        return this.sistema.getRelacionamentoService().getAmigos(login);
     }
 
     /**

@@ -4,16 +4,16 @@ import java.util.Collection;
 import java.util.function.Supplier;
 
 import br.ufal.ic.p2.jackut.entities.Dados;
-import br.ufal.ic.p2.jackut.exceptions.amizade.ConviteAindaNaoAceitoException;
-import br.ufal.ic.p2.jackut.exceptions.amizade.JaEhAmigoException;
-import br.ufal.ic.p2.jackut.exceptions.amizade.NaoPodeSeAdicionarComoAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.ConviteAindaNaoAceitoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoAmigoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
 import br.ufal.ic.p2.jackut.utils.MiscUtils;
 
 /**
- * Serviço implementando amizades entre usuários.
+ * Serviço implementando relacionamentos (amigo, fã, ídolo, paquera, inimigo) entre usuários.
  */
-public final class AmizadeService {
+public final class RelacionamentoService {
     /**
      * O banco de dados.
      */
@@ -24,7 +24,7 @@ public final class AmizadeService {
      *
      * @param dados o banco de dados.
      */
-    public AmizadeService(Supplier<Dados> dados) {
+    public RelacionamentoService(Supplier<Dados> dados) {
         this.dados = dados;
     }
 

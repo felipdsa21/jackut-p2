@@ -30,9 +30,9 @@ public final class Sistema {
     private final PerfilService perfilService;
 
     /**
-     * O serviço de amizades.
+     * O serviço de relacionamentos.
      */
-    private final AmizadeService amizadeService;
+    private final RelacionamentoService relacionamentoService;
 
     /**
      * O serviço de recados.
@@ -54,7 +54,7 @@ public final class Sistema {
         Supplier<Dados> dadosSupplier = () -> this.dados;
         this.usuarioService = new UsuarioService(dadosSupplier);
         this.perfilService = new PerfilService(dadosSupplier);
-        this.amizadeService = new AmizadeService(dadosSupplier);
+        this.relacionamentoService = new RelacionamentoService(dadosSupplier);
         this.recadoService = new RecadoService(dadosSupplier);
     }
 
@@ -109,12 +109,12 @@ public final class Sistema {
     }
 
     /**
-     * Retorna o serviço de amizades.
+     * Retorna o serviço de relacionamentos.
      *
      * @return o serviço.
      */
-    public AmizadeService getAmizadeService() {
-        return this.amizadeService;
+    public RelacionamentoService getRelacionamentoService() {
+        return this.relacionamentoService;
     }
 
     /**

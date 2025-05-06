@@ -1,4 +1,4 @@
-package br.ufal.ic.p2.jackut.exceptions.amizade;
+package br.ufal.ic.p2.jackut.exceptions.relacionamento;
 
 import br.ufal.ic.p2.jackut.exceptions.JackutException;
 
