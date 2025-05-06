@@ -1,0 +1,9 @@
+br.ufal.ic.p2.jackut
+br.ufal.ic.p2.jackut.entities
+br.ufal.ic.p2.jackut.exceptions
+br.ufal.ic.p2.jackut.exceptions.comunidade
+br.ufal.ic.p2.jackut.exceptions.recado
+br.ufal.ic.p2.jackut.exceptions.relacionamento
+br.ufal.ic.p2.jackut.exceptions.usuario
+br.ufal.ic.p2.jackut.services
+br.ufal.ic.p2.jackut.utils
