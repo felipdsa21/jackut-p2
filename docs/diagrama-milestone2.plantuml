@@ -1,0 +1,188 @@
+@startuml
+!theme plain
+hide circle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+class Facade {
+  - sistema : Sistema
+  + Facade()
+  + zerarSistema() : void
+  + encerrarSistema() : void
+  + criarUsuario(login : String, senha : String, nome : String) : void
+  + abrirSessao(login : String, senha : String) : String
+  + getAtributoUsuario(login : String, atributo : String) : String
+  + editarPerfil(sessao : String, atributo : String, valor : String) : void
+  + adicionarAmigo(sessao : String, amigo : String) : void
+  + ehAmigo(login : String, amigo : String) : boolean
+  + getAmigos(login : String) : String
+  + enviarRecado(sessao : String, destinatario : String, mensagem : String) : void
+  + lerRecado(sessao : String) : String
+  + criarComunidade(sessao : String, nome : String, descricao : String) : void
+  + getDescricaoComunidade(nome : String) : String
+  + getDonoComunidade(nome : String) : String
+  + getMembrosComunidade(nome : String) : String
+  + getComunidades(login : String) : String
+  + adicionarComunidade(sessao : String, nome : String) : void
+  + lerMensagem(sessao : String) : String
+  + enviarMensagem(sessao : String, comunidade : String, mensagem : String) : void
+  + ehFa(login : String, idolo : String) : boolean
+  + adicionarIdolo(sessao : String, idolo : String) : void
+  + getFas(login : String) : String
+  + ehPaquera(sessao : String, paquera : String) : boolean
+  + adicionarPaquera(sessao : String, paquera : String) : void
+  + getPaqueras(sessao : String) : String
+  + adicionarInimigo(sessao : String, inimigo : String) : void
+  + removerUsuario(sessao : String) : void
+}
+
+class JackutException {
+  + JackutException(message : String)
+  + JackutException(message : String, cause : Throwable)
+}
+
+note left
+JackutException tem muitas subclasses
+end note
+
+class Dados {
+  - usuarios : HashMap<String,Usuario>
+  - comunidades : HashMap<String,Comunidade>
+  - sessoes : HashMap<String,String>
+  + Dados()
+  + adicionarUsuario(usuario : Usuario) : void
+  + encontrarUsuario(login : String) : Usuario
+  + encontrarUsuarioPorSessao(sessao : String) : Usuario
+  + removerUsuario(login : String) : void
+  + adicionarComunidade(comunidade : Comunidade) : void
+  + encontrarComunidade(nome : String) : Comunidade
+  + removerComunidade(nome : String) : void
+  + getSessoes() : Map<String,String>
+}
+
+class Usuario {
+  - login : String
+  - senha : String
+  - atributos : HashMap<String,String>
+  - amigos : LinkedHashSet<String>
+  - convitesAmizade : LinkedHashSet<String>
+  - fas : LinkedHashSet<String>
+  - paqueras : LinkedHashSet<String>
+  - inimigos : LinkedHashSet<String>
+  - recados : ArrayList<Mensagem>
+  - comunidades : LinkedHashSet<String>
+  - mensagens : ArrayList<Mensagem>
+  + Usuario(login : String, senha : String, nome : String)
+  + getLogin() : String
+  + getSenha() : String
+  + getAtributos() : Map<String,String>
+  + getAmigos() : Set<String>
+  + getConvitesAmizade() : Set<String>
+  + getFas() : Set<String>
+  + getPaqueras() : Set<String>
+  + getInimigos() : Set<String>
+  + getRecados() : List<Mensagem>
+  + getComunidades() : Set<String>
+  + getMensagens() : List<Mensagem>
+}
+
+class Mensagem {
+  - remetente: String
+  - mensagem: String
+  + Mensagem(remetente : String, mensagem : String)
+  + mensagem() : String
+  + remetente() : String
+}
+
+class Comunidade {
+  - nome : String
+  - descricao : String
+  - dono : String
+  - membros : LinkedHashSet<String>
+  + Comunidade(nome : String, descricao : String, dono : String)
+  + getNome() : String
+  + getDescricao() : String
+  + getDono() : String
+  + getMembros() : Set<String>
+}
+
+class Sistema {
+  - caminho : Path
+  - dados : Dados
+  - usuarioService : UsuarioService
+  - perfilService : PerfilService
+  - relacionamentoService : RelacionamentoService
+  - recadoService : RecadoService
+  - comunidadeService : ComunidadeService
+  + Sistema(caminho : Path)
+  + carregarDados() : void
+  + salvarDados() : void
+  + zerarDados() : void
+  + getUsuarioService() : UsuarioService
+  + getPerfilService() : PerfilService
+  + getRelacionamentoService() : RelacionamentoService
+  + getRecadosService() : RecadoService
+  + getComunidadeService() : ComunidadeService
+}
+
+class UsuarioService {
+  - dados : Supplier<Dados>
+  + UsuarioService(dados : Supplier<Dados>)
+  + criarUsuario(login : String, senha : String, nome : String) : void
+  + abrirSessao(login : String, senha : String) : String
+  + removerUsuario(sessao : String) : void
+}
+
+class PerfilService {
+  - dados : Supplier<Dados>
+  + PerfilService(dados : Supplier<Dados>)
+  + getAtributoUsuario(login : String, atributo : String) : String
+  + editarPerfil(sessao : String, atributo : String, valor : String) : void
+}
+
+class RelacionamentoService {
+  - dados : Supplier<Dados>
+  + RelacionamentoService(dados : Supplier<Dados>)
+  + adicionarAmigo(sessao : String, amigo : String) : void
+  + ehAmigo(login : String, amigo : String) : boolean
+  + getAmigos(login : String) : String
+  + ehFa(login : String, idolo : String) : boolean
+  + adicionarIdolo(sessao : String, idolo : String) : void
+  + getFas(login : String) : String
+  + ehPaquera(sessao : String, paquera : String) : boolean
+  + adicionarPaquera(sessao : String, paquera : String) : void
+  + getPaqueras(sessao : String) : String
+  + adicionarInimigo(sessao : String, inimigo : String) : void
+}
+
+class RecadoService {
+  - dados : Supplier<Dados>
+  + RecadoService(dados : Supplier<Dados>)
+  + enviarRecado(sessao : String, destinatario : String, mensagem : String) : void
+  + lerRecado(sessao : String) : String
+}
+
+class ComunidadeService {
+  - dados : Supplier<Dados>
+  + ComunidadeService(dados : Supplier<Dados>)
+  + criarComunidade(sessao : String, nome : String, descricao : String) : void
+  + getDescricaoComunidade(nome : String) : String
+  + getDonoComunidade(nome : String) : String
+  + getMembrosComunidade(nome : String) : String
+  + getComunidades(login : String) : String
+  + adicionarComunidade(sessao : String, nome : String) : void
+  + lerMensagem(sessao : String) : String
+  + enviarMensagem(sessao : String, comunidade : String, mensagem : String) : void
+}
+
+Facade --> "usa\t" Sistema
+Dados o-- "gerencia\t" Usuario
+Dados o-- "gerencia\t" Comunidade
+Usuario o-- "contém\t" Mensagem
+Sistema o-- "contém\t" UsuarioService
+Sistema o-- "contém\t" PerfilService
+Sistema o-- "contém\t" RelacionamentoService
+Sistema o-- "contém\t" RecadoService
+Sistema o-- "contém\t" ComunidadeService
+Sistema o-- "contém, lê e salva\t" Dados
+@enduml

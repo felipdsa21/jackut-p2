@@ -2,8 +2,13 @@
 
 - Implementação de uma rede social chamada Jackut em Java.
 - Desenvolvido usando a metodologia Test-driven development (TDD).
+- Código totalmente comentado com Javadoc.
 
-O relatório de projeto está na pasta [docs](./docs).
+## Relatórios
+
+Os relatórios do projeto está na pasta [docs](./docs).
+
+Último relatório: [Milestone 2](./docs/relatorio-milestone2.md)
 
 ## Requirementos
 
