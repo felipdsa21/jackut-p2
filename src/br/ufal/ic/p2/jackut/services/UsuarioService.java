@@ -71,4 +71,17 @@ public final class UsuarioService {
             throw new LoginOuSenhaInvalidosException();
         }
     }
+
+    /**
+     * Remove o usuário com o login especificado.
+     * <br>Todas as informações sobre ele também são apagadas do sistema: relacionamentos, mensagens enviadas, perfil e
+     * comunidades criadas.
+     *
+     * @param sessao um id de sessão.
+     * @throws UsuarioNaoCadastradoException se a sessão for inválida.
+     */
+    public void removerUsuario(String sessao) throws UsuarioNaoCadastradoException {
+        var dados = this.dados.get();
+        dados.removerUsuario(dados.encontrarUsuarioPorSessao(sessao).getLogin());
+    }
 }

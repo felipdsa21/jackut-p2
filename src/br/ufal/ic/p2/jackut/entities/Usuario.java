@@ -42,9 +42,34 @@ public final class Usuario implements Serializable {
     private final LinkedHashSet<String> convitesAmizade;
 
     /**
+     * O conjunto de fãs do usuário.
+     */
+    private final LinkedHashSet<String> fas;
+
+    /**
+     * O conjunto de paqueras do usuário.
+     */
+    private final LinkedHashSet<String> paqueras;
+
+    /**
+     * O conjunto de inimigos do usuário.
+     */
+    private final LinkedHashSet<String> inimigos;
+
+    /**
      * Os recados enviados por outros usuários.
      */
-    private final ArrayList<String> recados;
+    private final ArrayList<Mensagem> recados;
+
+    /**
+     * O conjunto de comunidades das quais o usuário faz parte.
+     */
+    private final LinkedHashSet<String> comunidades;
+
+    /**
+     * As mensagens enviados via comunidade(s) por outros usuários.
+     */
+    private final ArrayList<Mensagem> mensagens;
 
     /**
      * Cria novo usuário com os dados especificados.
@@ -62,7 +87,12 @@ public final class Usuario implements Serializable {
         this.atributos.put("nome", nome);
         this.amigos = new LinkedHashSet<>();
         this.convitesAmizade = new LinkedHashSet<>();
+        this.fas = new LinkedHashSet<>();
+        this.paqueras = new LinkedHashSet<>();
+        this.inimigos = new LinkedHashSet<>();
         this.recados = new ArrayList<>();
+        this.comunidades = new LinkedHashSet<>();
+        this.mensagens = new ArrayList<>();
     }
 
     /**
@@ -111,11 +141,56 @@ public final class Usuario implements Serializable {
     }
 
     /**
+     * Retorna o conjunto de fãs do usuário.
+     *
+     * @return o conjunto.
+     */
+    public Set<String> getFas() {
+        return this.fas;
+    }
+
+    /**
+     * Retorna o conjunto de paqueras do usuário.
+     *
+     * @return o conjunto.
+     */
+    public Set<String> getPaqueras() {
+        return this.paqueras;
+    }
+
+    /**
+     * Retorna o conjunto de inimigos do usuário.
+     *
+     * @return o conjunto.
+     */
+    public Set<String> getInimigos() {
+        return this.inimigos;
+    }
+
+    /**
      * Retorna os recados enviados ao usuário.
      *
      * @return os recados.
      */
-    public List<String> getRecados() {
+    public List<Mensagem> getRecados() {
         return this.recados;
+    }
+
+    /**
+     * Retorna o conjunto de comunidades das quais o usuário faz parte.
+     *
+     * @return o conjunto.
+     */
+    public Set<String> getComunidades() {
+        return this.comunidades;
+    }
+
+    /**
+     * Retorna as mensagens enviados via comunidade(s) ao usuário.
+     *
+     * @return as mensagens.
+     */
+    public List<Mensagem> getMensagens() {
+        return this.mensagens;
     }
 }

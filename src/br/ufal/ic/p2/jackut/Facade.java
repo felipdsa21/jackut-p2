@@ -3,17 +3,29 @@ package br.ufal.ic.p2.jackut;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import br.ufal.ic.p2.jackut.exceptions.comunidade.ComunidadeJaExisteException;
+import br.ufal.ic.p2.jackut.exceptions.comunidade.ComunidadeNaoCriadaException;
+import br.ufal.ic.p2.jackut.exceptions.comunidade.JaEhParteDaComunidadeException;
+import br.ufal.ic.p2.jackut.exceptions.comunidade.NaoHaMensagensException;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoHaRecadosException;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoPodeSeEnviarRecadoException;
 import br.ufal.ic.p2.jackut.exceptions.relacionamento.ConviteAindaNaoAceitoException;
 import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhIdoloException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhInimigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.JaEhPaqueraException;
 import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoAmigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoIdoloException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoInimigoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeSeAdicionarComoPaqueraException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeUsarFuncaoEmInimigoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.AtributoNaoPreenchidoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.LoginInvalidoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.LoginOuSenhaInvalidosException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.SenhaInvalidaException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioJaCadastradoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
+import br.ufal.ic.p2.jackut.services.ComunidadeService;
 import br.ufal.ic.p2.jackut.services.PerfilService;
 import br.ufal.ic.p2.jackut.services.RecadoService;
 import br.ufal.ic.p2.jackut.services.RelacionamentoService;
@@ -93,7 +105,8 @@ public final class Facade {
         UsuarioNaoCadastradoException,
         ConviteAindaNaoAceitoException,
         JaEhAmigoException,
-        NaoPodeSeAdicionarComoAmigoException {
+        NaoPodeSeAdicionarComoAmigoException,
+        NaoPodeUsarFuncaoEmInimigoException {
         this.sistema.getRelacionamentoService().adicionarAmigo(sessao, amigo);
     }
 
@@ -115,7 +128,7 @@ public final class Facade {
      * Delega para {@link RecadoService#enviarRecado}. Veja o Javadoc lá.
      */
     public void enviarRecado(String sessao, String destinatario, String mensagem)
-        throws UsuarioNaoCadastradoException, NaoPodeSeEnviarRecadoException {
+        throws UsuarioNaoCadastradoException, NaoPodeSeEnviarRecadoException, NaoPodeUsarFuncaoEmInimigoException {
         this.sistema.getRecadosService().enviarRecado(sessao, destinatario, mensagem);
     }
 
@@ -124,5 +137,129 @@ public final class Facade {
      */
     public String lerRecado(String sessao) throws UsuarioNaoCadastradoException, NaoHaRecadosException {
         return this.sistema.getRecadosService().lerRecado(sessao);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#criarComunidade}. Veja o Javadoc lá.
+     */
+    public void criarComunidade(String sessao, String nome, String descricao)
+        throws UsuarioNaoCadastradoException, ComunidadeJaExisteException {
+        this.sistema.getComunidadeService().criarComunidade(sessao, nome, descricao);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#getDescricaoComunidade}. Veja o Javadoc lá.
+     */
+    public String getDescricaoComunidade(String nome) throws ComunidadeNaoCriadaException {
+        return this.sistema.getComunidadeService().getDescricaoComunidade(nome);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#getDonoComunidade}. Veja o Javadoc lá.
+     */
+    public String getDonoComunidade(String nome) throws ComunidadeNaoCriadaException {
+        return this.sistema.getComunidadeService().getDonoComunidade(nome);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#getMembrosComunidade}. Veja o Javadoc lá.
+     */
+    public String getMembrosComunidade(String nome) throws ComunidadeNaoCriadaException {
+        return this.sistema.getComunidadeService().getMembrosComunidade(nome);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#getComunidades}. Veja o Javadoc lá.
+     */
+    public String getComunidades(String login) throws UsuarioNaoCadastradoException {
+        return this.sistema.getComunidadeService().getComunidades(login);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#adicionarComunidade}. Veja o Javadoc lá.
+     */
+    public void adicionarComunidade(String sessao, String nome)
+        throws ComunidadeNaoCriadaException, UsuarioNaoCadastradoException, JaEhParteDaComunidadeException {
+        this.sistema.getComunidadeService().adicionarComunidade(sessao, nome);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#lerMensagem}. Veja o Javadoc lá.
+     */
+    public String lerMensagem(String sessao) throws UsuarioNaoCadastradoException, NaoHaMensagensException {
+        return this.sistema.getComunidadeService().lerMensagem(sessao);
+    }
+
+    /**
+     * Delega para {@link ComunidadeService#enviarMensagem}. Veja o Javadoc lá.
+     */
+    public void enviarMensagem(String sessao, String comunidade, String mensagem)
+        throws ComunidadeNaoCriadaException, UsuarioNaoCadastradoException {
+        this.sistema.getComunidadeService().enviarMensagem(sessao, comunidade, mensagem);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#ehFa}. Veja o Javadoc lá.
+     */
+    public boolean ehFa(String login, String idolo) throws UsuarioNaoCadastradoException {
+        return this.sistema.getRelacionamentoService().ehFa(login, idolo);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#adicionarIdolo}. Veja o Javadoc lá.
+     */
+    public void adicionarIdolo(String sessao, String idolo) throws
+        UsuarioNaoCadastradoException,
+        NaoPodeUsarFuncaoEmInimigoException,
+        JaEhIdoloException,
+        NaoPodeSeAdicionarComoIdoloException {
+        this.sistema.getRelacionamentoService().adicionarIdolo(sessao, idolo);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#getFas}. Veja o Javadoc lá.
+     */
+    public String getFas(String login) throws UsuarioNaoCadastradoException {
+        return this.sistema.getRelacionamentoService().getFas(login);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#ehPaquera}. Veja o Javadoc lá.
+     */
+    public boolean ehPaquera(String sessao, String paquera) throws UsuarioNaoCadastradoException {
+        return this.sistema.getRelacionamentoService().ehPaquera(sessao, paquera);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#adicionarPaquera}. Veja o Javadoc lá.
+     */
+    public void adicionarPaquera(String sessao, String paquera) throws
+        UsuarioNaoCadastradoException,
+        NaoPodeSeAdicionarComoPaqueraException,
+        NaoPodeUsarFuncaoEmInimigoException,
+        JaEhPaqueraException {
+        this.sistema.getRelacionamentoService().adicionarPaquera(sessao, paquera);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#getPaqueras}. Veja o Javadoc lá.
+     */
+    public String getPaqueras(String sessao) throws UsuarioNaoCadastradoException {
+        return this.sistema.getRelacionamentoService().getPaqueras(sessao);
+    }
+
+    /**
+     * Delega para {@link RelacionamentoService#adicionarInimigo}. Veja o Javadoc lá.
+     */
+    public void adicionarInimigo(String sessao, String inimigo)
+        throws UsuarioNaoCadastradoException, NaoPodeSeAdicionarComoInimigoException, JaEhInimigoException {
+        this.sistema.getRelacionamentoService().adicionarInimigo(sessao, inimigo);
+    }
+
+    /**
+     * Delega para {@link UsuarioService#removerUsuario}. Veja o Javadoc lá.
+     */
+    public void removerUsuario(String sessao) throws UsuarioNaoCadastradoException {
+        this.sistema.getUsuarioService().removerUsuario(sessao);
     }
 }

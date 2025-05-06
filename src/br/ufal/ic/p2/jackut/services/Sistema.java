@@ -40,6 +40,11 @@ public final class Sistema {
     private final RecadoService recadoService;
 
     /**
+     * O serviço de comunidades.
+     */
+    private final ComunidadeService comunidadeService;
+
+    /**
      * O banco de dados usado.
      */
     private Dados dados;
@@ -56,6 +61,7 @@ public final class Sistema {
         this.perfilService = new PerfilService(dadosSupplier);
         this.relacionamentoService = new RelacionamentoService(dadosSupplier);
         this.recadoService = new RecadoService(dadosSupplier);
+        this.comunidadeService = new ComunidadeService(dadosSupplier);
     }
 
     /**
@@ -124,5 +130,14 @@ public final class Sistema {
      */
     public RecadoService getRecadosService() {
         return this.recadoService;
+    }
+
+    /**
+     * Retorna o serviço de comunidades.
+     *
+     * @return o serviço.
+     */
+    public ComunidadeService getComunidadeService() {
+        return this.comunidadeService;
     }
 }

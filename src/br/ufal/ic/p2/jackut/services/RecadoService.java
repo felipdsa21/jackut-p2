@@ -3,9 +3,12 @@ package br.ufal.ic.p2.jackut.services;
 import java.util.function.Supplier;
 
 import br.ufal.ic.p2.jackut.entities.Dados;
+import br.ufal.ic.p2.jackut.entities.Mensagem;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoHaRecadosException;
 import br.ufal.ic.p2.jackut.exceptions.recado.NaoPodeSeEnviarRecadoException;
+import br.ufal.ic.p2.jackut.exceptions.relacionamento.NaoPodeUsarFuncaoEmInimigoException;
 import br.ufal.ic.p2.jackut.exceptions.usuario.UsuarioNaoCadastradoException;
+import br.ufal.ic.p2.jackut.utils.ServiceUtils;
 
 /**
  * Serviço implementando envio de recados entre usuários.
@@ -33,9 +36,10 @@ public final class RecadoService {
      * @param mensagem a mensagem do recado.
      * @throws UsuarioNaoCadastradoException se a sessão for inválida ou o destinatário não existir.
      * @throws NaoPodeSeEnviarRecadoException se o remetente e o destinatário forem o mesmo usuário.
+     * @throws NaoPodeUsarFuncaoEmInimigoException se o destinatário for inimigo do remetente.
      */
     public void enviarRecado(String sessao, String destinatario, String mensagem)
-        throws UsuarioNaoCadastradoException, NaoPodeSeEnviarRecadoException {
+        throws UsuarioNaoCadastradoException, NaoPodeSeEnviarRecadoException, NaoPodeUsarFuncaoEmInimigoException {
         var dados = this.dados.get();
         var usuario = dados.encontrarUsuarioPorSessao(sessao);
         var login = usuario.getLogin();
@@ -45,7 +49,9 @@ public final class RecadoService {
         }
 
         var usuarioDestinatario = dados.encontrarUsuario(destinatario);
-        usuarioDestinatario.getRecados().add(mensagem);
+        ServiceUtils.checarSeEhInimigo(usuario, usuarioDestinatario);
+
+        usuarioDestinatario.getRecados().add(new Mensagem(login, mensagem));
     }
 
     /**
@@ -64,7 +70,7 @@ public final class RecadoService {
         if (recados.isEmpty()) {
             throw new NaoHaRecadosException();
         } else {
-            return recados.remove(0);
+            return recados.remove(0).mensagem();
         }
     }
 }
